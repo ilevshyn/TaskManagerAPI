@@ -2,6 +2,9 @@ package org.example.taskmanagerapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -12,9 +15,15 @@ public class AppUser {
     @GeneratedValue
     private int id;
 
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 50)
     private String username;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must contain at least 8 characters")
     private String password;
 
+    @NotBlank(message = "Role is required")
     @Enumerated(EnumType.STRING)
     private Role role;
 
