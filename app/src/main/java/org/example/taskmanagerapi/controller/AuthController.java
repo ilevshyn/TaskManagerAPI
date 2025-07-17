@@ -2,10 +2,8 @@ package org.example.taskmanagerapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.example.taskmanagerapi.dto.AppUserDTO;
 import org.example.taskmanagerapi.model.AppUser;
 import org.example.taskmanagerapi.service.LoginService;
 import org.example.taskmanagerapi.service.RegisterServiceImpl;

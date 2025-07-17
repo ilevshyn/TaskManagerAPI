@@ -33,10 +33,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login")
+                        .requestMatchers("/auth/register", "/auth/login", "/swagger-ui.html", "/v3/**", "/swagger-ui/**")
                         .permitAll()
-                        .requestMatchers("/admin/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/**").hasAnyAuthority("SCOPE_ADMIN")
-                        .requestMatchers("/task/**").hasAnyRole("SCOPE_ADMIN", "SCOPE_USER")
+                        .requestMatchers("/admin/**").hasAnyAuthority("SCOPE_ADMIN")
+                        .requestMatchers("/task/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
                         .anyRequest().authenticated()
                         )
                 .oauth2ResourceServer(oauth2 -> oauth2

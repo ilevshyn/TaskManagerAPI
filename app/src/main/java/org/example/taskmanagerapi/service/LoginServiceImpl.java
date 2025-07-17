@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    AppUserService appUserService;
-    PasswordEncoder passwordEncoder;
-    JwtCreateService jwtCreateService;
+    private final AppUserService appUserService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtCreateService jwtCreateService;
 
     public LoginServiceImpl(AppUserService appUserService, JwtCreateService jwtCreateService, PasswordEncoder passwordEncoder) {
         this.appUserService = appUserService;

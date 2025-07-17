@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
-    AppUserService appUserService;
-    PasswordEncoder passwordEncoder;
+    private final AppUserService appUserService;
+    private final PasswordEncoder passwordEncoder;
 
     public RegisterServiceImpl(AppUserService appUserService, PasswordEncoder passwordEncoder) {
         this.appUserService = appUserService;

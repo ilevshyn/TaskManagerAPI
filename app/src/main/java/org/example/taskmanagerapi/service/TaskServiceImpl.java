@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    TaskRepository taskRepository;
-    AppUserRepository appUserRepository;
+    private final TaskRepository taskRepository;
+    private final AppUserRepository appUserRepository;
 
     public TaskServiceImpl(AppUserRepository appUserRepository, TaskRepository taskRepository) {
         this.appUserRepository = appUserRepository;
