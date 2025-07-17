@@ -1,2 +1,2 @@
 # TaskManagerAPI
-My first serious java sproing boot project
+My first serious java spring boot project

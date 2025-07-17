@@ -1,0 +1,6 @@
+org\example\taskmanagerapi\jwt\JwtCreateServiceTest.class
+org\example\taskmanagerapi\TaskManagerApiApplicationTests.class
+org\example\taskmanagerapi\service\AppUserServiceTest.class
+org\example\taskmanagerapi\controller\AdminControllerTest.class
+org\example\taskmanagerapi\controller\AuthControllerTest.class
+org\example\taskmanagerapi\controller\TaskControllerTest.class
