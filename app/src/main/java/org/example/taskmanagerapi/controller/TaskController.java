@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.taskmanagerapi.dto.TaskDTO;
 import org.example.taskmanagerapi.mapper.TaskMapper;
 import org.example.taskmanagerapi.model.Task;
-import org.example.taskmanagerapi.repository.AppUserRepository;
 import org.example.taskmanagerapi.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +19,9 @@ import java.util.List;
 @RestController
 public class TaskController {
 
-    AppUserRepository appUserRepository;
-    TaskService taskService;
+    private final TaskService taskService;
 
-    public TaskController(AppUserRepository appUserRepository, TaskService taskService) {
-        this.appUserRepository = appUserRepository;
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 

@@ -6,6 +6,7 @@
 
 # Maven target directory
 /target/
+/app/target
 
 # IntelliJ IDEA
 .idea/
