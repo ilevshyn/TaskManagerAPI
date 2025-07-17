@@ -33,9 +33,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login", "/autch/check")
+                        .requestMatchers("/auth/register", "/auth/login")
                         .permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("SCOPE_ADMIN")
+                        .requestMatchers("/admin/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/**").hasAnyAuthority("SCOPE_ADMIN")
                         .requestMatchers("/task/**").hasAnyRole("SCOPE_ADMIN", "SCOPE_USER")
                         .anyRequest().authenticated()
                         )

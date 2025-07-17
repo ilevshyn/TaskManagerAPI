@@ -1,5 +1,9 @@
 package org.example.taskmanagerapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.taskmanagerapi.dto.AppUserDTO;
 import org.example.taskmanagerapi.mapper.AppUserMapper;
 import org.example.taskmanagerapi.service.AppUserService;
@@ -17,6 +21,16 @@ public class AdminController {
         this.appUserService = appUserService;
     }
 
+    @Operation(
+            summary = "Get all users",
+            description = "Gets all users stored in database",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = AppUserDTO.class))
+                    )
+            }
+    )
     @GetMapping("/admin/users")
     public List<AppUserDTO> getAllUsers() {
         return appUserService.findAllAppUsers().stream().map(AppUserMapper::toAppUserDTO).toList();

@@ -1,5 +1,9 @@
 package org.example.taskmanagerapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.taskmanagerapi.dto.TaskDTO;
 import org.example.taskmanagerapi.mapper.TaskMapper;
 import org.example.taskmanagerapi.model.Task;
@@ -24,12 +28,31 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @Operation(
+            summary = "Get all tasks",
+            description = "Gets all users tasks",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskDTO.class)))
+            }
+    )
     @GetMapping("/tasks")
     public ResponseEntity<List<TaskDTO>> getTasks(@AuthenticationPrincipal Jwt token) {
         int ownerId = Integer.parseInt(token.getSubject());
         return ResponseEntity.ok(taskService.getAllTasks(ownerId).stream().map(TaskMapper::toTaskDTO).toList());
     }
 
+    @Operation(
+            summary = "Get task by id",
+            description = "Gets task with given id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskDTO.class))),
+                    @ApiResponse(responseCode = "204")
+            }
+    )
     @GetMapping("/tasks/{id}")
     public ResponseEntity<TaskDTO> getTask(@PathVariable int id, @AuthenticationPrincipal Jwt token) {
         int ownerId = Integer.parseInt(token.getSubject());
@@ -39,6 +62,15 @@ public class TaskController {
     }
 
 
+    @Operation(
+            summary = "Create task",
+            description = "Creates task with given title and description",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskDTO.class)))
+            }
+    )
     @PostMapping("/tasks")
     public ResponseEntity<TaskDTO> addTask(@AuthenticationPrincipal Jwt token,
                                         @RequestParam String title,
@@ -47,6 +79,15 @@ public class TaskController {
         return ResponseEntity.ok(TaskMapper.toTaskDTO(taskService.addTask(ownerId, title, description)));
     }
 
+    @Operation(
+            summary = "Delete task by id",
+            description = "Deletes task with given id, and returns result of operation",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "text/plain")),
+                    @ApiResponse(responseCode = "403", content = @Content(mediaType = "text/plain"))
+            }
+    )
     @DeleteMapping("/tasks/{taskId}")
     public ResponseEntity<String> deleteTask(@PathVariable Integer taskId, @AuthenticationPrincipal Jwt token) {
         int ownerId = Integer.parseInt(token.getSubject());
@@ -57,6 +98,16 @@ public class TaskController {
         }
     }
 
+    @Operation(
+            summary = "Update task by id",
+            description = "Updates task with given id, and returns updated task",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskDTO.class))),
+                    @ApiResponse(responseCode = "403")
+            }
+    )
     @PutMapping("/tasks/{taskId}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable Integer taskId,
                                            @RequestParam String title,

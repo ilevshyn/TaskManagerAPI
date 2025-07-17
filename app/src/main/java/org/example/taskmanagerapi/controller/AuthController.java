@@ -1,6 +1,11 @@
 package org.example.taskmanagerapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.example.taskmanagerapi.dto.AppUserDTO;
 import org.example.taskmanagerapi.model.AppUser;
 import org.example.taskmanagerapi.service.LoginService;
 import org.example.taskmanagerapi.service.RegisterServiceImpl;
@@ -20,6 +25,18 @@ public class AuthController {
         this.registerService = registerService;
     }
 
+    @Operation(
+            summary = "Register User",
+            description = "Registers user with given credentials, returns result of operation",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "text/plain")
+                    ),
+                    @ApiResponse(
+                            responseCode = "403", content = @Content(mediaType = "text/plain")
+                    )
+            }
+    )
     @PostMapping("/auth/register")
     public ResponseEntity<String> auth(@RequestBody @Valid AppUser user) {
         if (registerService.registerAppUser(user)) {
@@ -29,6 +46,18 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            summary = "Login User",
+            description = "Logins user with given credentials, returns bearer token on success",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", content = @Content(mediaType = "text/plain")),
+                    @ApiResponse(
+                            responseCode = "401", content = @Content(mediaType = "text/plain")
+                    )
+
+            }
+    )
     @PostMapping("/auth/login")
     public ResponseEntity<String> login(@Valid @RequestBody AppUser user) {
         String loginResult = loginService.login(user);
