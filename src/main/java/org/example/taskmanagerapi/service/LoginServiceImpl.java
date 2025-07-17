@@ -20,7 +20,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String login(AppUser appUser) {
-        var userInDatabase = appUserService.findUserByUsername(appUser.getUsername());
+        if (appUserService.findUserByUsername(appUser.getUsername()) == null) {
+            return null;
+        }
+        AppUser userInDatabase = appUserService.findUserByUsername(appUser.getUsername());
         boolean passwordMatches = passwordEncoder.matches(appUser.getPassword(), userInDatabase.getPassword());
         if (passwordMatches) {
             return jwtCreateService.issueToken(userInDatabase);

@@ -17,7 +17,7 @@ public class AppUserServiceTest {
     @Mock
     AppUserRepository appUserRepository;
 
-    AppUser appUser = new AppUser(Role.ADMIN, "password", "username");
+    AppUser appUser = new AppUser( "username","password", Role.USER);
 
     @Test
     void testFindAppUserByUsername() {

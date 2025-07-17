@@ -25,22 +25,12 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser findUserByUsername(String username) {
-        try {
-            return appUserRepository.findByUsername(username);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return appUserRepository.findByUsername(username);
     }
 
     @Override
     public AppUser createAppUser(AppUser appUser) {
-        if (appUserRepository.findByUsername(appUser.getUsername()) != null) {
-            return null;
-        }
-        else {
-            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-            return appUserRepository.save(appUser);
-        }
+        return appUserRepository.save(appUser);
     }
 
     @Override

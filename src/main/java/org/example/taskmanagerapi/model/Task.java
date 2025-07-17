@@ -2,12 +2,13 @@ package org.example.taskmanagerapi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
 public class Task {
     @Id @GeneratedValue
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "Title is required")
     private String title;
@@ -15,7 +16,7 @@ public class Task {
     @NotBlank(message = "Description can't be empty")
     private String description;
 
-    @NotBlank(message = "Task must have completion status")
+    @NotNull(message = "Task must have completion status")
     private boolean completed;
 
     @ManyToOne
@@ -40,7 +41,7 @@ public class Task {
     public Task() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

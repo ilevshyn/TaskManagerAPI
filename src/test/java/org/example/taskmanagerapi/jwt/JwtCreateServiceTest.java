@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JwtCreateServiceTest {
 
-    AppUser mockAppUser = new AppUser(Role.USER, "123", "Mock");
+    AppUser mockAppUser = new AppUser("user1", "1234", Role.USER);
 
     JwtCreateService jwtCreateService = new JwtCreateService("0054576d096f4c377b62197644d3b29221b65d2674148acda2fbaa6910f17c83");
 

@@ -23,7 +23,6 @@ public class AppUser {
     @Size(min = 8, message = "Password must contain at least 8 characters")
     private String password;
 
-    @NotBlank(message = "Role is required")
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -31,10 +30,15 @@ public class AppUser {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
-    public AppUser(Role role, String password, String username) {
-        this.role = role;
-        this.password = password;
+    public AppUser(String username, String password, Role role) {
         this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public AppUser(String username, String role) {
+        this.username = username;
+        this.role = Role.valueOf(role);
     }
 
     public AppUser() {}

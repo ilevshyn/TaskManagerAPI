@@ -30,24 +30,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteTask(int taskId) {
-        taskRepository.findById(taskId).ifPresent(task -> taskRepository.delete(task));
+    public boolean deleteTask(int taskId, int requesterId) {
+        Task result = taskRepository.findById(taskId).orElse(null);
+        if (result != null && result.getOwner().getId() == requesterId) {
+            taskRepository.delete(result);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Task updateTask(int taskId, String title, String description, boolean completed) {
-        try {
-            var tempTask = taskRepository.findById(taskId);
-            if (tempTask.isPresent()) {
-                tempTask.get().setTitle(title);
-                tempTask.get().setDescription(description);
-                tempTask.get().setCompleted(completed);
-                return taskRepository.save(tempTask.get());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public Task updateTask(int taskId, String title, String description, boolean completed, int requesterId) {
+        Task result = taskRepository.findById(taskId).orElse(null);
+        if (result != null && result.getOwner().getId() == requesterId) {
+            result.setTitle(title);
+            result.setDescription(description);
+            result.setCompleted(completed);
+            return taskRepository.save(result);
+        } else  {
+            return null;
+        }
+    }
+
+    @Override
+    public Task getTask(int taskId, int requesterId) {
+        Task task = taskRepository.findById(taskId).orElse(null);
+        if (task != null && task.getOwner().getId() == requesterId) {
+            return task;
+        } else {
+            return null;
         }
     }
 }
