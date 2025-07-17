@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,13 +23,13 @@ public class AppUserServiceTest {
 
     @Test
     void testFindAppUserByUsername() {
-        when(appUserRepository.findByUsername("username")).thenReturn(appUser);
-        assertEquals(appUser, appUserRepository.findByUsername("username"));
+        when(appUserRepository.findByUsername("username")).thenReturn(Optional.ofNullable(appUser));
+        assertEquals(appUser, appUserRepository.findByUsername("username").get());
     }
 
     @Test
     void testFindAppUserById(){
-        when(appUserRepository.findById(1)).thenReturn(appUser);
-        assertEquals(appUser, appUserRepository.findById(1));
+        when(appUserRepository.findById(1)).thenReturn(Optional.ofNullable(appUser));
+        assertEquals(appUser, appUserRepository.findById(1).get());
     }
 }

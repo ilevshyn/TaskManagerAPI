@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppUserService {
-    AppUser findUserById(int id);
-    AppUser findUserByUsername(String username);
+    Optional<AppUser> findUserById(int id);
+    Optional<AppUser> findUserByUsername(String username);
     void createAppUser(AppUser appUser);
     void deleteAppUser(AppUser appUser);
     Optional<List<AppUser>> findAllAppUsers();

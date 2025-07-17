@@ -17,12 +17,12 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser findUserById(int id) {
+    public Optional<AppUser> findUserById(int id) {
         return appUserRepository.findById(id);
     }
 
     @Override
-    public AppUser findUserByUsername(String username) {
+    public Optional<AppUser> findUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }
 

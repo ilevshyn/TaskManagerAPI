@@ -14,7 +14,7 @@ public class JwtCreateServiceTest {
 
     JwtCreateService jwtCreateService = new JwtCreateService("0054576d096f4c377b62197644d3b29221b65d2674148acda2fbaa6910f17c83");
 
-    String mockToken = jwtCreateService.issueToken(mockAppUser);
+    String mockToken = jwtCreateService.issueToken(mockAppUser).get();
 
     DecodedJWT jwt = JWT.decode(mockToken);
 

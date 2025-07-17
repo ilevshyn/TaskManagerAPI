@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.taskmanagerapi.dto.TaskDTO;
 import org.example.taskmanagerapi.mapper.TaskMapper;
-import org.example.taskmanagerapi.model.Task;
 import org.example.taskmanagerapi.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TaskController {
@@ -31,13 +31,19 @@ public class TaskController {
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TaskDTO.class)))
+                            schema = @Schema(implementation = TaskDTO.class))),
+                    @ApiResponse(responseCode = "204")
             }
     )
     @GetMapping("/tasks")
     public ResponseEntity<List<TaskDTO>> getTasks(@AuthenticationPrincipal Jwt token) {
         int ownerId = Integer.parseInt(token.getSubject());
-        return ResponseEntity.ok(taskService.getAllTasks(ownerId).stream().map(TaskMapper::toTaskDTO).toList());
+        var result = taskService.getAllTasks(ownerId);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(result.get().stream().map(TaskMapper::toTaskDTO).collect(Collectors.toList()));
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @Operation(
@@ -53,9 +59,9 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     public ResponseEntity<TaskDTO> getTask(@PathVariable int id, @AuthenticationPrincipal Jwt token) {
         int ownerId = Integer.parseInt(token.getSubject());
-        Task result = taskService.getTask(id, ownerId);
-        return result == null ? ResponseEntity.noContent().build()
-                              : ResponseEntity.ok(TaskMapper.toTaskDTO(result));
+        var result = taskService.getTask(id, ownerId);
+        return result.isEmpty() ? ResponseEntity.noContent().build()
+                              : ResponseEntity.ok(TaskMapper.toTaskDTO(result.get()));
     }
 
 
@@ -65,7 +71,8 @@ public class TaskController {
             responses = {
                     @ApiResponse(
                             responseCode = "200", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TaskDTO.class)))
+                            schema = @Schema(implementation = TaskDTO.class))),
+                    @ApiResponse(responseCode = "400")
             }
     )
     @PostMapping("/tasks")
@@ -73,7 +80,9 @@ public class TaskController {
                                         @RequestParam String title,
                                         @RequestParam String description) {
         int ownerId = Integer.parseInt(token.getSubject());
-        return ResponseEntity.ok(TaskMapper.toTaskDTO(taskService.addTask(ownerId, title, description)));
+        var result = taskService.addTask(ownerId, title, description);
+        return result.isPresent() ? ResponseEntity.ok(TaskMapper.toTaskDTO(result.get()))
+                : ResponseEntity.badRequest().build();
     }
 
     @Operation(
@@ -112,9 +121,9 @@ public class TaskController {
                                            @RequestParam boolean completed,
                                               @AuthenticationPrincipal Jwt token) {
         int requesterId = Integer.parseInt(token.getSubject());
-        Task result = taskService.updateTask(taskId, title, description, completed, requesterId);
-        if (result != null) {
-            return ResponseEntity.ok(TaskMapper.toTaskDTO(result));
+        var result = taskService.updateTask(taskId, title, description, completed, requesterId);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(TaskMapper.toTaskDTO(result.get()));
         } else  {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }

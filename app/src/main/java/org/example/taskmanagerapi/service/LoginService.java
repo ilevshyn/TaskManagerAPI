@@ -2,6 +2,8 @@ package org.example.taskmanagerapi.service;
 
 import org.example.taskmanagerapi.model.AppUser;
 
+import java.util.Optional;
+
 public interface LoginService {
-    String login(AppUser appUser);
+    Optional<String> login(AppUser appUser);
 }

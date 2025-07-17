@@ -50,12 +50,12 @@ public class TaskControllerTest {
         appUserRepository.save(appUser);
         appUserRepository.save(appUserAdmin);
         taskRepository.deleteAll();
-        task1 = new Task("title1", "description1", appUserRepository.findById(1), false);
-        task2 = new Task("title2", "description2", appUserRepository.findById(1), false);
+        task1 = new Task("title1", "description1", appUserRepository.findById(1).get(), false);
+        task2 = new Task("title2", "description2", appUserRepository.findById(1).get(), false);
         taskRepository.save(task1);
         taskRepository.save(task2);
-        userToken = jwtCreateService.issueToken(appUser);
-        adminToken = jwtCreateService.issueToken(appUserAdmin);
+        userToken = jwtCreateService.issueToken(appUser).get();
+        adminToken = jwtCreateService.issueToken(appUserAdmin).get();
     }
 
     @Test

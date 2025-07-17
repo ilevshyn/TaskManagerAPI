@@ -53,14 +53,13 @@ public class AuthController {
                     @ApiResponse(
                             responseCode = "401", content = @Content(mediaType = "text/plain")
                     )
-
             }
     )
     @PostMapping("/auth/login")
     public ResponseEntity<String> login(@Valid @RequestBody AppUser user) {
-        String loginResult = loginService.login(user);
-        if (loginResult != null){
-            return ResponseEntity.ok(loginResult);
+        var loginResult = loginService.login(user);
+        if (loginResult.isPresent()){
+            return ResponseEntity.ok(loginResult.get());
         } else  {
             return ResponseEntity.status(401).body("Username or password is incorrect!");
         }

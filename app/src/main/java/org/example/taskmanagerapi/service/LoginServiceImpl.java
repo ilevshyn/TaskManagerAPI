@@ -5,6 +5,8 @@ import org.example.taskmanagerapi.model.AppUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -19,16 +21,17 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String login(AppUser appUser) {
-        if (appUserService.findUserByUsername(appUser.getUsername()) == null) {
-            return null;
-        }
-        AppUser userInDatabase = appUserService.findUserByUsername(appUser.getUsername());
-        boolean passwordMatches = passwordEncoder.matches(appUser.getPassword(), userInDatabase.getPassword());
-        if (passwordMatches) {
-            return jwtCreateService.issueToken(userInDatabase);
+    public Optional<String> login(AppUser appUser) {
+        Optional<AppUser> userInDatabase = appUserService.findUserByUsername(appUser.getUsername());
+        if (userInDatabase.isPresent()) {
+            boolean passwordMatches = passwordEncoder.matches(appUser.getPassword(), userInDatabase.get().getPassword());
+            if (passwordMatches) {
+                return jwtCreateService.issueToken(userInDatabase.get());
+            } else  {
+                return Optional.empty();
+            }
         } else  {
-            return null;
+            return Optional.empty();
         }
     }
 }

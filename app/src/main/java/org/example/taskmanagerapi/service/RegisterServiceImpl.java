@@ -15,7 +15,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     public boolean registerAppUser(AppUser appUser) {
-        if (appUserService.findUserByUsername(appUser.getUsername()) != null) {
+        if (appUserService.findUserByUsername(appUser.getUsername()).isPresent()) {
             return false;
         } else {
             appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));

@@ -6,6 +6,7 @@ import org.example.taskmanagerapi.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -19,14 +20,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTasks(int ownerId) {
+    public Optional<List<Task>> getAllTasks(int ownerId) {
         return taskRepository.findByOwnerId(ownerId);
     }
 
     @Override
-    public Task addTask(int ownerId, String title, String description) {
-        Task newTask = new Task(title, description, appUserRepository.findById(ownerId), false);
-        return taskRepository.save(newTask);
+    public Optional<Task> addTask(int ownerId, String title, String description) {
+        Task newTask = new Task(title, description, appUserRepository.findById(ownerId).get(), false);
+        return Optional.of(taskRepository.save(newTask));
     }
 
     @Override
@@ -41,25 +42,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTask(int taskId, String title, String description, boolean completed, int requesterId) {
+    public Optional<Task> updateTask(int taskId, String title, String description, boolean completed, int requesterId) {
         Task result = taskRepository.findById(taskId).orElse(null);
         if (result != null && result.getOwner().getId() == requesterId) {
             result.setTitle(title);
             result.setDescription(description);
             result.setCompleted(completed);
-            return taskRepository.save(result);
+            return Optional.of(taskRepository.save(result));
         } else  {
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public Task getTask(int taskId, int requesterId) {
+    public Optional<Task> getTask(int taskId, int requesterId) {
         Task task = taskRepository.findById(taskId).orElse(null);
         if (task != null && task.getOwner().getId() == requesterId) {
-            return task;
+            return Optional.of(task);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 }

@@ -42,8 +42,8 @@ public class AdminControllerTest {
         appUserRepository.deleteAll();
         appUserRepository.save(appUser);
         appUserRepository.save(appUserAdmin);
-        userToken = jwtCreateService.issueToken(appUser);
-        adminToken = jwtCreateService.issueToken(appUserAdmin);
+        userToken = jwtCreateService.issueToken(appUser).get();
+        adminToken = jwtCreateService.issueToken(appUserAdmin).get();
     }
 
     @Test

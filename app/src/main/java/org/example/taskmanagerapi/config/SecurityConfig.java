@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/register", "/auth/login", "/swagger-ui.html", "/v3/**", "/swagger-ui/**")
                         .permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("SCOPE_ADMIN")
-                        .requestMatchers("/task/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
+                        .requestMatchers("/task/**", "/tasks").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_USER")
                         .anyRequest().authenticated()
                         )
                 .oauth2ResourceServer(oauth2 -> oauth2
